@@ -1,0 +1,53 @@
+{
+  "publisher": "timursaurus",
+  "name": "siebel-web-helper",
+  "displayName": "Siebel Web Helper",
+  "version": "0.0.1",
+  "description": "Siebel Open UI Type Definitions in any workspace",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "vscode": "^1.69.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --external vscode",
+    "dev": "yarn build --watch",
+    "lint": "eslint .",
+    "pack": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "Siebel",
+    "OpenUI",
+    "TypeScript",
+    "Type Definitions",
+    "Global"
+  ],
+  "categories": ["Other"],
+  "author": "Timur Bolotov <bolotovtmr@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@types/vscode": "^1.73.1",
+    "eslint": "^8.27.0",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4",
+    "vitest": "^0.25.2",
+    "vsce": "^2.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timursaurus/siebel-web-helper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/timursaurus/siebel-web-helper/issues"
+  },
+  "homepage": "https://github.com/timursaurus/siebel-web-helper#readme"
+}
