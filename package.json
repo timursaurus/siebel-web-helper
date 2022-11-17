@@ -14,6 +14,34 @@
   "activationEvents": [
     "onStartupFinished"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "siebel-web-helper.inject-jquery",
+        "title": "Add Jquery Type Definitions"
+      },
+      {
+        "command": "siebel-web-helper.inject-siebel",
+        "title": "Add Siebel App Type Definitions"
+      },
+      {
+        "command": "siebel-web-helper.remove-jquery",
+        "title": "Remove Jquery Type Definitions"
+      },
+      {
+        "command": "siebel-web-helper.remove-siebel",
+        "title": "Remove Siebel App Type Definitions"
+      },
+      {
+        "command": "siebel-web-helper.inject-both",
+        "title": "Add Siebel & Jquery Type Definitions"
+      },
+      {
+        "command": "siebel-web-helper.remove-all",
+        "title": "Remove Siebel & Jquery Type Definitions"
+      }
+    ]
+  },
   "scripts": {
     "build": "tsup src/index.ts --external vscode",
     "dev": "yarn build --watch",
@@ -29,7 +57,9 @@
     "Type Definitions",
     "Global"
   ],
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "author": "Timur Bolotov <bolotovtmr@gmail.com>",
   "license": "MIT",
   "devDependencies": {

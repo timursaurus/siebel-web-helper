@@ -16,8 +16,7 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log('dtsUri', dtsUri)
   const siebelAppTypes = vscode.window.showInformationMessage(path.join(__dirname, '..', 'src', 'types', 'siebelapp.d.ts'))
 
-  console.log('apptpes', siebelAppTypes)
-  const ref = '\n/// <reference path="' + dtsUri.path + '" />'
+  const tsRef = `\n/// <reference path="${dtsUri.path}" />`
   // get vscode's installation path
 
 
@@ -27,7 +26,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const tslibPath = path.join(vscode.env.appRoot, 'extensions', 'node_modules', 'typescript', 'lib', 'lib.es5.d.ts')
 
-  fs.appendFile(tslibPath, ref, (err) => {
+  vscode.workspace.fs.isWritableFileSystem
+
+  fs.appendFile(tslibPath, tsRef, (err) => {
     if (err) {
       console.log('Error', err)
     }
