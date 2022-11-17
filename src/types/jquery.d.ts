@@ -1,4 +1,4 @@
-// Type definitions for jQuery 2.0
+// Type definitions for jQuery 1.10
 // Project: http://jquery.com/
 // Definitions by: Boris Yankov <https://github.com/borisyankov>
 //                 Christian Hoffmeister <https://github.com/choffmeister>
@@ -601,14 +601,6 @@ interface BaseJQueryEventObject extends Event {
   metaKey: boolean;
 }
 
-interface JQueryCustomEventObject extends BaseJQueryEventObject {
-  /**
-   * @see {@link https://api.jquery.com/category/events/event-object/}
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent}
-   */
-  detail?: any;
-}
-
 interface JQueryInputEventObject extends BaseJQueryEventObject {
   altKey: boolean;
   ctrlKey: boolean;
@@ -633,13 +625,12 @@ interface JQueryKeyEventObject extends JQueryInputEventObject {
   char: string;
   /** @deprecated */
   charCode: number;
-  code: string;
   key: string;
   /** @deprecated */
   keyCode: number;
 }
 
-interface JQueryEventObject extends BaseJQueryEventObject, JQueryCustomEventObject, JQueryInputEventObject, JQueryMouseEventObject, JQueryKeyEventObject {
+interface JQueryEventObject extends BaseJQueryEventObject, JQueryInputEventObject, JQueryMouseEventObject, JQueryKeyEventObject{
 }
 
 /**
@@ -1413,6 +1404,16 @@ interface JQueryStatic {
    * @see {@link https://api.jquery.com/jQuery.unique/}
    */
   unique<T extends Element>(array: T[]): T[];
+
+  /**
+   * Parses a string into an array of DOM nodes.
+   *
+   * @param data HTML string to be parsed
+   * @param context DOM element to serve as the context in which the HTML fragment will be created
+   * @param keepScripts A Boolean indicating whether to include scripts passed in the HTML string
+   * @see {@link https://api.jquery.com/jQuery.parseHTML/}
+   */
+  parseHTML(data: string, context?: HTMLElement, keepScripts?: boolean): any[];
 
   /**
    * Parses a string into an array of DOM nodes.
@@ -3287,7 +3288,7 @@ interface JQuery {
    * @name toArray
    * @see {@link https://api.jquery.com/toArray/}
    */
-  toArray(): Element[];
+  toArray(): HTMLElement[];
 
   /**
    * Remove the parents of the set of matched elements from the DOM, leaving the matched elements in their place.
@@ -3354,13 +3355,13 @@ interface JQuery {
    * @param index A zero-based integer indicating which element to retrieve.
    * @see {@link https://api.jquery.com/get/#get-index}
    */
-  get(index: number): Element;
+  get(index: number): HTMLElement;
   /**
    * Retrieve the elements matched by the jQuery object.
    * @alias toArray
    * @see {@link https://api.jquery.com/get/#get}
    */
-  get(): Element[];
+  get(): HTMLElement[];
 
   /**
    * Search for a given element from among the matched elements.
@@ -3386,7 +3387,7 @@ interface JQuery {
    * @see {@link https://api.jquery.com/selector/}
    */
   selector: string;
-  [index: number]: Element;
+  [index: number]: HTMLElement;
 
   /**
    * Add elements to the set of matched elements.
@@ -3517,11 +3518,24 @@ interface JQuery {
   /**
    * Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
    *
-   * @param selector_element A string containing a selector expression, an element or a jQuery object to match elements against.
+   * @param selector A string containing a selector expression to match elements against.
    * @see {@link https://api.jquery.com/find/#find-selector}
+   */
+  find(selector: string): JQuery;
+  /**
+   * Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
+   *
+   * @param element An element to match elements against.
    * @see {@link https://api.jquery.com/find/#find-element}
    */
-  find(selector_element: string | Element | JQuery): JQuery;
+  find(element: Element): JQuery;
+  /**
+   * Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
+   *
+   * @param obj A jQuery object to match elements against.
+   * @see {@link https://api.jquery.com/find/#find-element}
+   */
+  find(obj: JQuery): JQuery;
 
   /**
    * Reduce the set of matched elements to the first in the set.
@@ -3631,10 +3645,10 @@ interface JQuery {
   /**
    * Remove elements from the set of matched elements.
    *
-   * @param selector A string containing a selector expression, or an array of elements to match against the set.
+   * @param selector A string containing a selector expression to match elements against.
    * @see {@link https://api.jquery.com/not/#not-selector}
    */
-  not(selector: string|any[]): JQuery;
+  not(selector: string): JQuery;
   /**
    * Remove elements from the set of matched elements.
    *
