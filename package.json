@@ -30,7 +30,7 @@
       },
       {
         "command": "siebel-web-helper.remove-siebel",
-        "title": "Remove Siebel App Type Definitions"
+        "title": "Remove Siebel Type Definitions"
       },
       {
         "command": "siebel-web-helper.inject-both",
@@ -65,9 +65,11 @@
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@types/vscode": "^1.73.1",
-    "eslint": "^8.27.0",
+    "@typescript-eslint/eslint-plugin": ">=5.43.0",
+    "@typescript-eslint/parser": ">=5.43.0",
+    "eslint": ">=8.0.0",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.3",
+    "typescript": ">=4.4",
     "vite": "^3.2.4",
     "vitest": "^0.25.2",
     "vsce": "^2.14.0"
