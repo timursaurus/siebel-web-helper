@@ -9,7 +9,7 @@
     "dist"
   ],
   "engines": {
-    "vscode": "^1.69.0"
+    "vscode": "^1.67.0"
   },
   "activationEvents": [
     "onStartupFinished"
@@ -17,28 +17,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "siebel-web-helper.inject-jquery",
-        "title": "Add Jquery Type Definitions"
-      },
-      {
-        "command": "siebel-web-helper.inject-siebel",
-        "title": "Add Siebel App Type Definitions"
-      },
-      {
-        "command": "siebel-web-helper.remove-jquery",
-        "title": "Remove Jquery Type Definitions"
-      },
-      {
-        "command": "siebel-web-helper.remove-siebel",
-        "title": "Remove Siebel Type Definitions"
-      },
-      {
-        "command": "siebel-web-helper.inject-both",
-        "title": "Add Siebel & Jquery Type Definitions"
+        "title": "Add Siebel Open UI related Type Definitions",
+        "command": "siebel-web-helper.inject-all"
       },
       {
         "command": "siebel-web-helper.remove-all",
-        "title": "Remove Siebel & Jquery Type Definitions"
+        "title": "Remove Siebel Open UI related Type Definitions"
       }
     ]
   },
@@ -64,7 +48,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "@types/vscode": "^1.73.1",
+    "@types/vscode": "^1.67.0",
     "@typescript-eslint/eslint-plugin": ">=5.43.0",
     "@typescript-eslint/parser": ">=5.43.0",
     "eslint": ">=8.0.0",

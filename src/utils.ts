@@ -1,9 +1,11 @@
-import path from "node:path";
 import * as vscode from "vscode";
+import path from "node:path";
 import fs from "node:fs";
 
-export const appRoot =
-  vscode.window.showInformationMessage(vscode.env.appRoot) || "";
+export const INJECTION_KEY_START = "@siebel-web-helper-injection-start";
+export const INJECTION_KEY_END = "@siebel-web-helper-injection-end";
+
+export const appRoot = vscode.env.appRoot
 
 export const tslibPath = path.join(
   vscode.env.appRoot,
@@ -14,8 +16,25 @@ export const tslibPath = path.join(
   "lib.es5.d.ts"
 );
 
-export const INJECTION_KEY_START = "@siebel-web-helper-injection-start";
-export const INJECTION_KEY_END = "@siebel-web-helper-injection-end";
+export function reloadWindow() {
+  return new Promise((resolve) =>
+    vscode.commands
+      .executeCommand("workbench.action.reloadWindow")
+      .then(resolve)
+  );
+}
+
+export function askToReloadWindow() {
+  vscode.window.showInformationMessage('Reload the Window for changes to take effect.', 'Reload', 'Later').then(selection => {
+    if (selection === 'Reload') {
+      reloadWindow()
+    }
+    if (selection === 'Later') {
+      return
+    }
+  })
+}
+//3lvwhx3ao725h4eiun42oflfexu5ohmxkmu2kjvmizmlq7ktkmvq
 
 export function hasRefs() {
   const tslib = fs.readFileSync(tslibPath, "utf8");
@@ -38,13 +57,5 @@ export function toReferencePath(uri: vscode.Uri): string {
 
 export const jqueryRef = toReferencePath(getLocalDtsUri("jquery"));
 export const siebelRef = toReferencePath(getLocalDtsUri("siebelapp"));
-export const withBothRefs = jqueryRef + siebelRef;
+export const allRefs = jqueryRef + siebelRef;
 
-
-export function reloadWindow() {
-  return new Promise((resolve) =>
-    vscode.commands
-      .executeCommand("workbench.action.reloadWindow")
-      .then(resolve)
-  );
-}

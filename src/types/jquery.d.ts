@@ -1,3 +1,5 @@
+/// <reference no-default-lib="true"/>
+
 // Type definitions for jQuery 1.10
 // Project: http://jquery.com/
 // Definitions by: Boris Yankov <https://github.com/borisyankov>

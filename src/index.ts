@@ -1,19 +1,21 @@
 import * as vscode from "vscode";
-import path from "node:path";
 import {
+  allRefs,
   appRoot,
+  askToReloadWindow,
   reloadWindow,
 } from "./utils";
-import { prependRefs, removeRefs } from "./write";
+import { injectRefs, removeRefs } from "./write";
 
 export async function activate(context: vscode.ExtensionContext) {
-  // .  /// <reference path="/Users/timur/dev/siebel-web-helper/src/types/siebelapp.d.ts" />
-  // FIXME: This is a hack to get the path to the .d.ts file. It should be
-  // configurable.
 
-  prependRefs()
-  // removeRefs()
-  // insertInjectionKeys()
+  vscode.commands.registerCommand('siebel-web-helper.inject-all', () => {
+    injectRefs(allRefs).then(() => askToReloadWindow())
+  })
+
+  vscode.commands.registerCommand('siebel-web-helper.remove-all', () => {
+    removeRefs().then(() => askToReloadWindow())
+  })
 
   if (!appRoot) {
     vscode.window
@@ -36,34 +38,11 @@ export async function activate(context: vscode.ExtensionContext) {
       });
   }
 
-  // console.log("hasTypeInjection", hasTypeInjection());
 
-  const dtsPath = path.join(__dirname, "..", "src", "types", "siebelapp.d.ts");
-
-  const dtsUri = vscode.Uri.file(dtsPath);
-
-  // vscode.Uri.file(dtsPath);
-
-  console.log("dtsUri", dtsUri);
-  const siebelAppTypes = vscode.window.showInformationMessage(
-    path.join(__dirname, "..", "src", "types", "siebelapp.d.ts")
-  );
-
-  // get vscode's installation path
-
-  // vscode.workspace.fs.writeFile()
-
-  // const appRoot = vscode.window.showInformationMessage(vscode.env.appRoot)
-
-  // fs.appendFile(tslibPath, tsRef, (err) => {
-  //   if (err) {
-  //     console.log('Error', err)
-  //   }
-  // })
-
-  console.log(appRoot);
 }
 
 export function deactivate() {
-  //
+  // if (hasRefs()) {
+  //   removeRefs().then(() => vscode.window.showInformationMessage('Siebel Open UI Types have been removed.'))
+  // }
 }

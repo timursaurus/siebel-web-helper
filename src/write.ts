@@ -1,28 +1,37 @@
 import fs from "node:fs";
+import * as vscode from 'vscode'
 import {
   hasRefs,
   INJECTION_KEY_END,
   INJECTION_KEY_START,
   tslibPath,
-  withBothRefs,
 } from "./utils";
 
 export function removeRefs() {
-  if (hasRefs()) {
-    const tslib = fs.readFileSync(tslibPath, "utf8");
-    const start = tslib.indexOf("//" + INJECTION_KEY_START);
-    const end = tslib.indexOf(INJECTION_KEY_END) + INJECTION_KEY_END.length;
-    const updatedTslib = tslib.slice(0, start) + tslib.slice(end);
-    fs.writeFileSync(tslibPath, updatedTslib, "utf8");
-  }
+  return new Promise((resolve, reject) => {
+    if (hasRefs()) {
+      const tslib = fs.readFileSync(tslibPath, "utf8");
+      const start = tslib.indexOf("//" + INJECTION_KEY_START);
+      const end = tslib.indexOf(INJECTION_KEY_END) + INJECTION_KEY_END.length;
+      const updatedTslib = tslib.slice(0, start) + tslib.slice(end);
+      fs.writeFile(tslibPath, updatedTslib, () => resolve(true));
+    } else {
+      vscode.window.showErrorMessage("No Siebel Open UI types have been injected.");
+      reject()
+    }
+  })
 }
 
-export function prependRefs() {
-  if (!hasRefs()) {
-    const tslib = fs.readFileSync(tslibPath, "utf8");
-    const updatedTslib =
-      `//${INJECTION_KEY_START}${withBothRefs}\n//${INJECTION_KEY_END}\n` +
-      tslib;
-    fs.writeFileSync(tslibPath, updatedTslib);
-  }
+export function injectRefs(tsRefs: string) {
+  return new Promise((resolve, reject) => {
+    if (!hasRefs()) {
+      const tslib = fs.readFileSync(tslibPath, "utf8");
+      const updatedTslib =
+        `//${INJECTION_KEY_START}${tsRefs}\n//${INJECTION_KEY_END}\n` + tslib;
+      fs.writeFile(tslibPath, updatedTslib, () => resolve(true));
+    } else {
+      vscode.window.showErrorMessage("Siebel Open UI types have already been injected.");
+      reject()
+    }
+  });
 }
