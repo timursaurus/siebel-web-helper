@@ -1,42 +1,48 @@
-import * as vscode from 'vscode'
-import path from 'node:path'
-import fs from 'node:fs'
+import * as vscode from "vscode";
+import {
+  allRefs,
+  appRoot,
+  askToReloadWindow,
+  reloadWindow,
+} from "./utils";
+import { injectRefs, removeRefs } from "./write";
 
 export async function activate(context: vscode.ExtensionContext) {
 
-  // .  /// <reference path="/Users/timur/dev/siebel-web-helper/src/types/siebelapp.d.ts" />
-  // FIXME: This is a hack to get the path to the .d.ts file. It should be
-  // configurable.
-  const dtsPath = path.join(__dirname, '..', 'src', 'types', 'siebelapp.d.ts')
-
-  const dtsUri = vscode.Uri.file(dtsPath)
-
-  vscode.Uri.file(dtsPath)
-
-  console.log('dtsUri', dtsUri)
-  const siebelAppTypes = vscode.window.showInformationMessage(path.join(__dirname, '..', 'src', 'types', 'siebelapp.d.ts'))
-
-  const tsRef = `\n/// <reference path="${dtsUri.path}" />`
-  // get vscode's installation path
-
-
-  // vscode.workspace.fs.writeFile()
-
-  const appRoot = vscode.window.showInformationMessage(vscode.env.appRoot)
-
-  const tslibPath = path.join(vscode.env.appRoot, 'extensions', 'node_modules', 'typescript', 'lib', 'lib.es5.d.ts')
-
-  vscode.workspace.fs.isWritableFileSystem
-
-  fs.appendFile(tslibPath, tsRef, (err) => {
-    if (err) {
-      console.log('Error', err)
-    }
+  vscode.commands.registerCommand('siebel-web-helper.inject-all', () => {
+    injectRefs(allRefs).then(() => askToReloadWindow())
   })
 
-  console.log(
-    appRoot
-  )
+  vscode.commands.registerCommand('siebel-web-helper.remove-all', () => {
+    removeRefs().then(() => askToReloadWindow())
+  })
+
+  if (!appRoot) {
+    vscode.window
+      .showErrorMessage(
+        "No VS Code root folder to inject types has been found.",
+        "Dismiss",
+        "Reload",
+        "Try Again"
+      )
+      .then((selection) => {
+        if (selection === "Try Again") {
+          activate(context);
+        }
+        if (selection === "Reload") {
+          reloadWindow();
+        }
+        if (selection === "Dismiss") {
+          return;
+        }
+      });
+  }
+
+
 }
 
-export function deactivate() {}
+export function deactivate() {
+  // if (hasRefs()) {
+  //   removeRefs().then(() => vscode.window.showInformationMessage('Siebel Open UI Types have been removed.'))
+  // }
+}
